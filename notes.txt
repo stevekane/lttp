@@ -1,0 +1,61 @@
+#Overview
+5 player
+4 chararcters
+1 overlord
+
+##Screen
+1080p display is the sole target
+60 pixel blocks
+total playspace is 18 X 32
+
+##Overlord:
+"Tetris/Blokus from above"
+Overlord places bricks in an attempt
+Overlord wins by draining 10 resources from center by having
+a continuous chain of blocks connected to any wall
+Overlord constantly loses power
+Overlord starts at 50% power
+If power reaches zero, overlord loses
+If power reaches 100%, game over
+If power 0%, game over
+Power rules are YTBD
+
+###Blocks:
+####Powered blocks
+Any block that has at least one neighbord that is powered 
+Power originates from the corners of the board
+
+
+####Active Environmental obstacle blocks
+They are inactive when not continuously connected
+
+####Passive blocks
+#####Nothing block
+Can be destroyed?
+
+#####Industructible blocks
+Never be destroyed
+Are a valid source of power
+
+#####Power blocks
+Can be destroyed
+Provide power
+
+#####Lava??  
+would have to jump over?
+
+#####Blocks that benefit the players
+Things like speed boost
+Health
+Special weapons
+
+####Minion Blocks
+When X happens enemies are spawned from this location
+
+##Players
+Link to the past style combat with analog and jump + dash?
+Sword or some melee is default weapon
+Explosive for demo
+Jump/Attack/Special/Dash
+Shared Health between all players.  Finite supply
+Respawn time of a few seconds

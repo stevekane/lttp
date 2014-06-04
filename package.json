@@ -1,0 +1,34 @@
+{
+  "name": "lttp",
+  "version": "0.0.0",
+  "description": "This game will dominate the earth",
+  "main": "server.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/stevekane/lttp.git"
+  },
+  "keywords": [
+    "lttp"
+  ],
+  "author": "Steve Kane and Co",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stevekane/lttp/issues"
+  },
+  "homepage": "https://github.com/stevekane/lttp",
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "express": "^4.1.0",
+    "ecstatic": "^0.5.1",
+    "es6ify": "^1.1.0",
+    "jade": "^1.3.1",
+    "browserify": "^4.1.8",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^2.1.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "watchify": "^0.10.2"
+  }
+}
