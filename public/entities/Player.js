@@ -39,8 +39,8 @@ module.exports = class Player extends Phaser.Sprite {
       , descent = this.game.add.tween(this).to({z: initialHeight}, downTime, easeDown)
 
     ascent.onStart.add(() => {
-     this.jumpSound.play()
-     this.jumping = true
+      this.jumpSound.play()
+      this.jumping = true
     })
     descent.onComplete.add(() => {
       this.landSound.play()

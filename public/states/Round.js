@@ -54,7 +54,6 @@ module.exports = class Round extends Phaser.State {
   update() {
     var {inputs, game, players, walls} = this 
 
-    players.callAll("stop")
     inputs.forEach(doActionForKey)
   }
 }
