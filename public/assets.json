@@ -13,6 +13,20 @@
         "width": 64,
         "height": 64,
         "length": 4
+      },
+      {
+        "name": "hadouken",
+        "path": "sprites/hadouken.png",
+        "width": 100,
+        "height": 75,
+        "length": 6
+      },
+      {
+        "name": "fireball",
+        "path": "sprites/fireball.png",
+        "width": 23,
+        "height": 28,
+        "length": 4 
       }
     ],
     "images": [
@@ -29,6 +43,10 @@
       {
         "name": "land",
         "path": "sounds/land.ogg"
+      },
+      {
+        "name": "hadouken",
+        "path": "sounds/hadouken.mp3"
       }
     ]
   }

@@ -1,16 +1,25 @@
 var Player = require("../entities/Player")
+var Hadouken = require("../entities/Hadouken")
 
 module.exports = class Round extends Phaser.State {
   registerPlayer(player) {
     this.players.add(player) 
     player.body.collides(this.wallsCg)
+    //players.body.collides(this.hadoukensCg)
     player.body.setCollisionGroup(this.playersCg)
   }
 
   registerWall(wall) {
     this.walls.push(wall)
     wall.collides(this.playersCg)
+    wall.collides(this.hadoukensCg)
     wall.setCollisionGroup(this.wallsCg)
+  }
+
+  registerHadouken(had) {
+    //had.body.collides(this.playersCg)
+    had.body.collides(this.wallsCg, had.explode, had)
+    had.body.setCollisionGroup(this.hadoukensCg) 
   }
 
   preload() {
@@ -28,10 +37,18 @@ module.exports = class Round extends Phaser.State {
     this.map = this.game.add.tilemap("map")
     this.map.addTilesetImage("Desert", "Desert")
     this.ground = this.map.createLayer("Ground")
+
     this.players = this.add.group()
+
+    this.hadoukens = this.add.group()
+    this.hadoukens.classType = Hadouken
+    this.hadoukens.createMultiple(1000)
+
     this.walls = []
+
     this.playersCg = this.game.physics.p2.createCollisionGroup()
     this.wallsCg = this.game.physics.p2.createCollisionGroup()
+    this.hadoukensCg = this.game.physics.p2.createCollisionGroup()
 
     var player1 = new Player(this.game, 900, 450)
     var walls = this.game.physics.p2.convertCollisionObjects(
@@ -42,6 +59,7 @@ module.exports = class Round extends Phaser.State {
 
     this.registerPlayer(player1)
     walls.forEach(this.registerWall, this)
+    this.hadoukens.forEach(this.registerHadouken, this)
 
     this.inputs.push({
       key: this.input.keyboard.addKey(Phaser.Keyboard.UP), 
@@ -66,6 +84,10 @@ module.exports = class Round extends Phaser.State {
     this.inputs.push({
       key: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
       down: player1.jump.bind(player1)
+    })
+    this.inputs.push({
+      key: this.input.keyboard.addKey(Phaser.Keyboard.F),
+      down: player1.fire.bind(player1, this.hadoukens)
     })
   }
 
