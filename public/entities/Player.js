@@ -2,11 +2,11 @@ module.exports = class Player extends Phaser.Sprite {
   constructor(game, x, y) {
     super(game, x, y, "player", 0)
 
-    game.physics.enable(this)
-    this.body.collideWorldBounds = true
-    this.body.setSize(64, 64, 0, 0)
+    game.physics.p2.enable(this)
+    this.enableBody = true
+    this.physicsBodyType = Phaser.Physics.P2JS
+    this.body.setCircle(24)
 
-    this.checkWorldBounds = true
     this.anchor.setTo(.5, .5)
     this.speed = 150
     this.jumping = false
@@ -62,19 +62,17 @@ module.exports = class Player extends Phaser.Sprite {
 
     this.scale.x = this.z
     this.scale.y = this.z
+    this.body.setZeroRotation()
+    this.body.rotation = stopped 
+      ? this.body.rotation 
+      : Phaser.Math.angleBetween(0, 0, xVel, yVel) + this.rotationOffset
 
     if (!this.jumping) {
       this.body.velocity.x = xVel 
       this.body.velocity.y = yVel
       this.animations.play(stopped ? "idle" : "walking")
-      this.rotation = stopped 
-        ? this.rotation 
-        : Phaser.Math.angleBetween(0, 0, xVel, yVel) + this.rotationOffset
     } else {
       this.animations.play("jumping") 
-      this.rotation = stopped 
-        ? this.rotation 
-        : Phaser.Math.angleBetween(0, 0, xVel, yVel) + this.rotationOffset
     }
   }
 }
