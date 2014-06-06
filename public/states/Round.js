@@ -1,44 +1,45 @@
 var Player = require("../entities/Player")
-var Wall = require("../entities/Wall")
 
 module.exports = class Round extends Phaser.State {
   preload() {
-    this.load.spritesheet('player', 'sprites/enemy.png', 64, 64, 4)
-    this.load.image('wall', 'sprites/player.png')
-    this.load.audio('jump', 'sounds/jump.ogg')
-    this.load.audio('land', 'sounds/land.ogg')
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
+    this.game.scale.setScreenSize()
+    this.game._assetLoader.loadFor("Round")
   }
 
   create() {
     var player1 = new Player(this.game, 0, 0)
-    var wall1 = new Wall(this, 200, 200)
     var upKey = this.input.keyboard.addKey(Phaser.Keyboard.UP)
     var rightKey = this.input.keyboard.addKey(Phaser.Keyboard.RIGHT)
     var downKey = this.input.keyboard.addKey(Phaser.Keyboard.DOWN)
     var leftKey = this.input.keyboard.addKey(Phaser.Keyboard.LEFT)
     var jumpKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+    var map = this.game.add.tilemap("map")
+    var layer = map.createLayer("Ground")
+    
+    map.addTilesetImage("Desert", "Desert")
 
     this.physics.startSystem(Phaser.Physics.Arcade)
     this.inputs = [
       {
         key: upKey, 
-        down: () => { player1.up = true}, 
-        up: () => {player1.up = false}
+        down: () => { player1.up = true }, 
+        up: () => { player1.up = false }
       },
       {
         key: rightKey, 
-        down: () => { player1.right = true}, 
-        up: () => {player1.right = false}
+        down: () => { player1.right = true }, 
+        up: () => { player1.right = false }
       },
       {
         key: downKey, 
-        down: () => { player1.down = true}, 
-        up: () => {player1.down = false}
+        down: () => { player1.down = true }, 
+        up: () => { player1.down = false }
       },
       {
         key: leftKey, 
-        down: () => { player1.left = true}, 
-        up: () => {player1.left = false}
+        down: () => { player1.left = true }, 
+        up: () => { player1.left = false }
       },
       {
         key: jumpKey, 
@@ -52,9 +53,15 @@ module.exports = class Round extends Phaser.State {
   }
 
   update() {
-    var {inputs, game, players, walls} = this 
+    var {inputs, game, players} = this 
 
     inputs.forEach(doActionForKey)
+  }
+
+  render() {
+    //this.players.children.forEach(function (player) {
+    //  this.game.debug.rectangle(player.body) 
+    //}, this)
   }
 }
 

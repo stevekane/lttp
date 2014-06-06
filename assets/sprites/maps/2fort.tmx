@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="60" height="30" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" source="../../../../../../Volumes/Tiled 0.9.1/examples/desert.tsx"/>
+ <layer name="Ground" width="60" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztmMsOwiAQRVFX1pWvhc/E18LX//+eNNGI02G4bamllMVZ9Qbm0KYMZEqprGcsNLPIWRq+E81Ks46UjWZMfA+aY6ScBN+z5ka4MGPQHM1w49AckkHmctUt+ebPBprhm5Hl3Zs5LkPH4XJIBpnLVbfLF/nWzRyXoeNwOSSDzFXHqY++U/X9j8875GurW/J9qOL//FnR15yfWzskg/pKdaPfrISrBm5+unZIBvVFa23K1yfJN/n68JX6mlB8kd6rzB5r62tC8UV7r7o9RUi+dXqRMvN89k5bTxKTL907uZ6Egp69uDpsa/sv36rvCTl7UaS1Dd3X9z1D8k2+bfoiZ81YfNGzZiy+TZB8Md+rKvYC9w76ujxytur3TtRk5xirbUwXxAMl990HCr3zk3gBQGa/MA==
+  </data>
+ </layer>
+ <objectgroup name="collisions" width="60" height="30">
+  <object gid="48" x="3" y="-213"/>
+ </objectgroup>
+</map>

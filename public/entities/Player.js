@@ -4,6 +4,8 @@ module.exports = class Player extends Phaser.Sprite {
 
     game.physics.arcade.enable(this)
     this.body.collideWorldBounds = true
+    this.body.setSize(64, 64, 0, 0)
+
     this.checkWorldBounds = true
     this.anchor.setTo(.5, .5)
     this.speed = 150
@@ -64,10 +66,15 @@ module.exports = class Player extends Phaser.Sprite {
     if (!this.jumping) {
       this.body.velocity.x = xVel 
       this.body.velocity.y = yVel
-      this.rotation = stopped ? this.rotation : Phaser.Math.angleBetween(0, 0, xVel, yVel) + this.rotationOffset
       this.animations.play(stopped ? "idle" : "walking")
+      this.rotation = stopped 
+        ? this.rotation 
+        : Phaser.Math.angleBetween(0, 0, xVel, yVel) + this.rotationOffset
     } else {
       this.animations.play("jumping") 
+      this.rotation = stopped 
+        ? this.rotation 
+        : Phaser.Math.angleBetween(0, 0, xVel, yVel) + this.rotationOffset
     }
   }
 }

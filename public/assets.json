@@ -1,0 +1,35 @@
+{
+  "Round": {
+    "tilemaps": [
+      {
+        "name": "map",
+        "path": "sprites/maps/2fort.json"
+      }
+    ],
+    "spritesheets": [
+      {
+        "name": "player",
+        "path": "sprites/enemy.png",
+        "width": 64,
+        "height": 64,
+        "length": 4
+      }
+    ],
+    "images": [
+      {
+        "name": "Desert",
+        "path": "sprites/tmw_desert_spacing.png"
+      }
+    ],
+    "audios": [
+      {
+        "name": "jump",
+        "path": "sounds/jump.ogg"
+      },
+      {
+        "name": "land",
+        "path": "sounds/land.ogg"
+      }
+    ]
+  }
+}
