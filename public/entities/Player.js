@@ -5,10 +5,10 @@ module.exports = class Player extends Phaser.Sprite {
     game.physics.p2.enable(this)
     this.enableBody = true
     this.physicsBodyType = Phaser.Physics.P2JS
+    this.anchor.setTo(.5, .5)
     this.body.setCircle(24)
 
-    this.anchor.setTo(.5, .5)
-    this.speed = 150
+    this.speed = 300
     this.jumping = false
     this.jumpDuration = 600
     this.z = 1.0
