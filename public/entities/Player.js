@@ -2,7 +2,7 @@ module.exports = class Player extends Phaser.Sprite {
   constructor(game, x, y) {
     super(game, x, y, "player", 0)
 
-    game.physics.arcade.enable(this)
+    game.physics.enable(this)
     this.body.collideWorldBounds = true
     this.body.setSize(64, 64, 0, 0)
 

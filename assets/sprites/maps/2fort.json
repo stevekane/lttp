@@ -13,7 +13,7 @@
         }, 
         {
          "height":30,
-         "name":"collisions",
+         "name":"Collisions",
          "objects":[
                 {
                  "gid":48,
@@ -28,6 +28,201 @@
                  "width":0,
                  "x":3,
                  "y":-213
+                }, 
+                {
+                 "height":960,
+                 "name":"leftwall",
+                 "properties":
+                    {
+
+                    },
+                 "type":"boundary",
+                 "visible":true,
+                 "width":80,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "height":80,
+                 "name":"topwall",
+                 "properties":
+                    {
+
+                    },
+                 "type":"boundary",
+                 "visible":true,
+                 "width":1920,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "height":48,
+                 "name":"bottomwall",
+                 "properties":
+                    {
+
+                    },
+                 "type":"boundary",
+                 "visible":true,
+                 "width":1920,
+                 "x":0,
+                 "y":912
+                }, 
+                {
+                 "height":960,
+                 "name":"rightwall",
+                 "properties":
+                    {
+
+                    },
+                 "type":"boundary",
+                 "visible":true,
+                 "width":80,
+                 "x":1840,
+                 "y":0
+                }, 
+                {
+                 "height":160,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":161,
+                 "x":145,
+                 "y":146
+                }, 
+                {
+                 "height":449,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":131,
+                 "x":465,
+                 "y":146
+                }, 
+                {
+                 "height":195,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":196,
+                 "x":720,
+                 "y":146
+                }, 
+                {
+                 "height":194,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":195,
+                 "x":1009,
+                 "y":145
+                }, 
+                {
+                 "height":483,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":131,
+                 "x":1329,
+                 "y":146
+                }, 
+                {
+                 "height":160,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":164,
+                 "x":1616,
+                 "y":146
+                }, 
+                {
+                 "height":193,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":164,
+                 "x":880,
+                 "y":594
+                }, 
+                {
+                 "height":495,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":131,
+                 "x":1551,
+                 "y":465
+                }, 
+                {
+                 "height":494,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":131,
+                 "x":239,
+                 "y":466
+                }, 
+                {
+                 "height":40,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":171,
+                 "x":76,
+                 "y":879
+                }, 
+                {
+                 "height":38,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":174,
+                 "x":1675,
+                 "y":881
                 }],
          "opacity":1,
          "type":"objectgroup",

@@ -6,7 +6,22 @@
    eJztmMsOwiAQRVFX1pWvhc/E18LX//+eNNGI02G4bamllMVZ9Qbm0KYMZEqprGcsNLPIWRq+E81Ks46UjWZMfA+aY6ScBN+z5ka4MGPQHM1w49AckkHmctUt+ebPBprhm5Hl3Zs5LkPH4XJIBpnLVbfLF/nWzRyXoeNwOSSDzFXHqY++U/X9j8875GurW/J9qOL//FnR15yfWzskg/pKdaPfrISrBm5+unZIBvVFa23K1yfJN/n68JX6mlB8kd6rzB5r62tC8UV7r7o9RUi+dXqRMvN89k5bTxKTL907uZ6Egp69uDpsa/sv36rvCTl7UaS1Dd3X9z1D8k2+bfoiZ81YfNGzZiy+TZB8Md+rKvYC9w76ujxytur3TtRk5xirbUwXxAMl990HCr3zk3gBQGa/MA==
   </data>
  </layer>
- <objectgroup name="collisions" width="60" height="30">
+ <objectgroup name="Collisions" width="60" height="30">
   <object gid="48" x="3" y="-213"/>
+  <object name="leftwall" type="boundary" x="0" y="0" width="80" height="960"/>
+  <object name="topwall" type="boundary" x="0" y="0" width="1920" height="80"/>
+  <object name="bottomwall" type="boundary" x="0" y="912" width="1920" height="48"/>
+  <object name="rightwall" type="boundary" x="1840" y="0" width="80" height="960"/>
+  <object x="145" y="146" width="161" height="160"/>
+  <object x="465" y="146" width="131" height="449"/>
+  <object x="720" y="146" width="196" height="195"/>
+  <object x="1009" y="145" width="195" height="194"/>
+  <object x="1329" y="146" width="131" height="483"/>
+  <object x="1616" y="146" width="164" height="160"/>
+  <object x="880" y="594" width="164" height="193"/>
+  <object x="1551" y="465" width="131" height="495"/>
+  <object x="239" y="466" width="131" height="494"/>
+  <object x="76" y="879" width="171" height="40"/>
+  <object x="1675" y="881" width="174" height="38"/>
  </objectgroup>
 </map>

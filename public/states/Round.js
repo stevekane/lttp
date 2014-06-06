@@ -5,55 +5,52 @@ module.exports = class Round extends Phaser.State {
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
     this.game.scale.setScreenSize()
     this.game._assetLoader.loadFor("Round")
+    this.physics.startSystem(Phaser.Physics.P2JS)
+    this.game.physics.p2.setImpactEvents(true)
+    this.inputs = []
+    this.movementBounds = this.game.physics.p2.createCollisionGroup()
   }
 
   create() {
-    var player1 = new Player(this.game, 0, 0)
-    var upKey = this.input.keyboard.addKey(Phaser.Keyboard.UP)
-    var rightKey = this.input.keyboard.addKey(Phaser.Keyboard.RIGHT)
-    var downKey = this.input.keyboard.addKey(Phaser.Keyboard.DOWN)
-    var leftKey = this.input.keyboard.addKey(Phaser.Keyboard.LEFT)
-    var jumpKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
-    var map = this.game.add.tilemap("map")
-    var layer = map.createLayer("Ground")
-    
-    map.addTilesetImage("Desert", "Desert")
+    var {input, game, inputs} = this
+    var player1 = new Player(this.game, 900, 450)
 
-    this.physics.startSystem(Phaser.Physics.Arcade)
-    this.inputs = [
-      {
-        key: upKey, 
-        down: () => { player1.up = true }, 
-        up: () => { player1.up = false }
-      },
-      {
-        key: rightKey, 
-        down: () => { player1.right = true }, 
-        up: () => { player1.right = false }
-      },
-      {
-        key: downKey, 
-        down: () => { player1.down = true }, 
-        up: () => { player1.down = false }
-      },
-      {
-        key: leftKey, 
-        down: () => { player1.left = true }, 
-        up: () => { player1.left = false }
-      },
-      {
-        key: jumpKey, 
-        down: player1.jump.bind(player1)
-      }
-    ]
+    this.map = game.add.tilemap("map")
+    this.map.addTilesetImage("Desert", "Desert")
+    this.ground = this.map.createLayer("Ground")
+    this.players = game.add.group()
+    this.movementBounds = game.physics.p2.createCollisionGroup()
 
-    this.players = this.add.group()
+    inputs.push({
+      key: input.keyboard.addKey(Phaser.Keyboard.UP), 
+      down: () => { player1.up = true }, 
+      up: () => { player1.up = false }
+    })
+    inputs.push({
+      key: input.keyboard.addKey(Phaser.Keyboard.RIGHT), 
+      down: () => { player1.right = true }, 
+      up: () => { player1.right = false }
+    })
+    inputs.push({
+      key: input.keyboard.addKey(Phaser.Keyboard.DOWN), 
+      down: () => { player1.down = true }, 
+      up: () => { player1.down = false }
+    })
+    inputs.push({
+      key: input.keyboard.addKey(Phaser.Keyboard.LEFT), 
+      down: () => { player1.left = true }, 
+      up: () => { player1.left = false }
+    })
+    inputs.push({
+      key: input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+      down: player1.jump.bind(player1)
+    })
 
     this.players.add(player1)
   }
 
   update() {
-    var {inputs, game, players} = this 
+    var {inputs, game, players, collisions} = this 
 
     inputs.forEach(doActionForKey)
   }
