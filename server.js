@@ -7,9 +7,6 @@ var sio = require("socket.io");
 var app = express();
 var server = http.Server(app);
 var io = sio(server);
-var controllerToIdMap = {
-
-};
 
 var servers = io
   .of("/server")

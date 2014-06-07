@@ -7,6 +7,7 @@ var path       = require('path')
 
 browserify()
   .require(require.resolve('./public/controllers/controller.js'), { entry: true })
+  .external("socket.io-client")
   .bundle({ debug: true })
   .on('error', function (err) { console.error(err); })
   .pipe(fs.createWriteStream(bundlePath));

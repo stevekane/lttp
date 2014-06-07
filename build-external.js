@@ -6,6 +6,7 @@ var path       = require('path')
 
 browserify()
   .require("lodash")
+  .require("socket.io-client")
   .bundle({ debug: true })
   .on('error', function (err) { console.error(err); })
   .pipe(fs.createWriteStream(bundlePath));
