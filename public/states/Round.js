@@ -1,11 +1,11 @@
 var Player = require("../entities/Player")
 var Hadouken = require("../entities/Hadouken")
+var {getRandom, noop, isTypeCombo} = require("../utils")
 
 module.exports = class Round extends Phaser.State {
   registerPlayer(player) {
     this.players.add(player) 
     player.body.collides(this.wallsCg)
-    //players.body.collides(this.hadoukensCg)
     player.body.setCollisionGroup(this.playersCg)
   }
 
@@ -17,9 +17,42 @@ module.exports = class Round extends Phaser.State {
   }
 
   registerHadouken(had) {
-    //had.body.collides(this.playersCg)
-    had.body.collides(this.wallsCg, had.explode, had)
+    had.body.collides(this.wallsCg, this.hadoukenHitsWall, this)
     had.body.setCollisionGroup(this.hadoukensCg) 
+  }
+
+  hadoukenHitsPlayer(had, player) {
+    if (had.sprite.owner === player.sprite) {
+      return 
+    } else if (player.sprite.jumping) {
+      getRandom(this.dodgeSounds).play()
+      return
+    } else {
+      getRandom(this.killSounds).play()
+      had.sprite.kill()
+      //player.sprite.kill()
+    }
+  }
+
+  hadoukenHitsWall(had, wall) {
+    getRandom(this.explosionSounds).play() 
+    had.sprite.kill()
+  }
+
+  checkOverlap(body1, body2) {
+    var hadouken
+      , player
+      , shouldCollide = true
+
+    if (isTypeCombo(body1.name, body2.name, "player", "hadouken")) {
+      player = body1.name === "player" ? body1 : body2
+      hadouken = body2.name === "hadouken" ? body2 : body1
+      this.hadoukenHitsPlayer(hadouken, player)
+      shouldCollide = false
+    } else {
+      shouldCollide = true
+    }
+    return shouldCollide
   }
 
   preload() {
@@ -34,6 +67,25 @@ module.exports = class Round extends Phaser.State {
 
   create() {
     this.inputs = []
+
+    this.music = this.game.add.audio("music")
+    this.music.play()
+
+    this.killSounds = [
+      this.game.add.audio("toasty"), 
+      this.game.add.audio("toasty3")
+    ]
+
+    this.explosionSounds = [
+      this.game.add.audio("explosion"),
+      this.game.add.audio("explosion5")
+    ]
+
+    this.dodgeSounds = [
+      this.game.add.audio("dodge"),
+      this.game.add.audio("dodge2"),
+    ]
+
     this.map = this.game.add.tilemap("map")
     this.map.addTilesetImage("Desert", "Desert")
     this.ground = this.map.createLayer("Ground")
@@ -51,6 +103,7 @@ module.exports = class Round extends Phaser.State {
     this.hadoukensCg = this.game.physics.p2.createCollisionGroup()
 
     var player1 = new Player(this.game, 900, 450)
+    var player2 = new Player(this.game, 1100, 450)
     var walls = this.game.physics.p2.convertCollisionObjects(
       this.map,
       "Collisions",
@@ -58,6 +111,7 @@ module.exports = class Round extends Phaser.State {
     )
 
     this.registerPlayer(player1)
+    this.registerPlayer(player2)
     walls.forEach(this.registerWall, this)
     this.hadoukens.forEach(this.registerHadouken, this)
 
@@ -89,14 +143,18 @@ module.exports = class Round extends Phaser.State {
       key: this.input.keyboard.addKey(Phaser.Keyboard.F),
       down: player1.fire.bind(player1, this.hadoukens)
     })
+
+    //DEBUG/TESTING
+    setInterval(() => {
+      player2.jump() 
+    }, 1500)
+    this.game.physics.p2.setPostBroadphaseCallback(this.checkOverlap, this)
   }
 
   update() {
     this.inputs.forEach(doActionForKey)
   }
 }
-
-var noop = () => {}
 
 var doActionForKey = ({key, down, up}) => {
   var down = down || noop

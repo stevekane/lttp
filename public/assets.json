@@ -47,6 +47,34 @@
       {
         "name": "hadouken",
         "path": "sounds/hadouken.mp3"
+      },
+      {
+        "name": "explosion",
+        "path": "sounds/explosion.mp3"
+      },
+      {
+        "name": "explosion5",
+        "path": "sounds/explosion5.mp3"
+      },
+      {
+        "name": "toasty",
+        "path": "sounds/toasty.mp3"
+      },
+      {
+        "name": "toasty3",
+        "path": "sounds/toasty3.mp3"
+      },
+      {
+        "name": "dodge",
+        "path": "sounds/dodge.mp3"
+      },
+      {
+        "name": "dodge2",
+        "path": "sounds/dodge2.mp3"
+      },
+      {
+        "name": "music",
+        "path": "sounds/music.ogg"
       }
     ]
   }

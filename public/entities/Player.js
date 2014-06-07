@@ -4,14 +4,16 @@ module.exports = class Player extends Phaser.Sprite {
     super(game, x, y, "none", 0)
 
     game.physics.p2.enable(this)
-    this.enableBody = true
-    this.physicsBodyType = Phaser.Physics.P2JS
-    this.anchor.setTo(.5, .5)
+
     this.body.setCircle(24)
+    this.body.name = "player"
 
     this.speed = 300
     this.jumping = false
     this.jumpDuration = 600
+    this.hadoukenTimeout = 1000
+    this.lastHadouken = null
+
     this.z = 1.0
     this.scale.setTo(this.z, this.z)
     this.rotationOffset = Math.PI / 2
@@ -55,10 +57,15 @@ module.exports = class Player extends Phaser.Sprite {
 
   fire(hadoukens) {
     var hadouken = hadoukens.getFirstExists(false)
+    var now = this.game.time.now
+    var hadoukenAllowed = now > this.lastHadouken + this.hadoukenTimeout
 
+    if (!hadoukenAllowed) return
     hadouken.reset(this.x, this.y)
     hadouken.body.rotation = this.body.rotation
     hadouken.body.moveForward(hadouken.speed)
+    hadouken.owner = this
+    this.lastHadouken = now
     this.fireSound.play()
   }
 
