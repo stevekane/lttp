@@ -56,8 +56,6 @@ module.exports = class Round extends Phaser.State {
   }
 
   preload() {
-    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
-    this.game.scale.setScreenSize()
     this.game._assetLoader.loadFor("Round")
     this.physics.startSystem(Phaser.Physics.P2JS)
     this.game.physics.p2.setImpactEvents(true)
@@ -67,9 +65,6 @@ module.exports = class Round extends Phaser.State {
 
   create() {
     this.inputs = []
-
-    this.music = this.game.add.audio("music")
-    this.music.play()
 
     this.killSounds = [
       this.game.add.audio("toasty"), 
@@ -103,7 +98,6 @@ module.exports = class Round extends Phaser.State {
     this.hadoukensCg = this.game.physics.p2.createCollisionGroup()
 
     var player1 = new Player(this.game, 900, 450)
-    var player2 = new Player(this.game, 1100, 450)
     var walls = this.game.physics.p2.convertCollisionObjects(
       this.map,
       "Collisions",
@@ -111,7 +105,6 @@ module.exports = class Round extends Phaser.State {
     )
 
     this.registerPlayer(player1)
-    this.registerPlayer(player2)
     walls.forEach(this.registerWall, this)
     this.hadoukens.forEach(this.registerHadouken, this)
 
@@ -144,10 +137,6 @@ module.exports = class Round extends Phaser.State {
       down: player1.fire.bind(player1, this.hadoukens)
     })
 
-    //DEBUG/TESTING
-    setInterval(() => {
-      player2.jump() 
-    }, 1500)
     this.game.physics.p2.setPostBroadphaseCallback(this.checkOverlap, this)
   }
 

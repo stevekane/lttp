@@ -9,9 +9,6 @@ module.exports = class Hadouken extends Phaser.Sprite {
     this.body.setCircle(16)
     this.body.name = "hadouken"
 
-    this.checkWorldBounds = true
-    this.outOfBoundsKill = true
-
     this.speed = 2000
     this.owner = null
 

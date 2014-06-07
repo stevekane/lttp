@@ -1,6 +1,7 @@
 var io = require("socket.io-client")
   , serverUrl = window.location.href
   , socket = io.connect(serverUrl)
+  , nameInput = document.getElementById("name")
 
 var Input = function (game, key, prop) {
   return {
@@ -10,17 +11,18 @@ var Input = function (game, key, prop) {
 };
 
 var states = {
-  preload: function () {
-    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    this.game.scale.setScreenSize();
+  updateName: function (e) {
+    this.name = e.target.value;
   },
   create: function () {
+    nameInput.addEventListener("input", this.updateName.bind(this));
     this.up = false;
     this.right = false;
     this.down = false;
     this.left = false;
     this.jump = false;
     this.fire = false;
+    this.name = "";
 
     this.inputs = [
       Input(this, Phaser.Keyboard.UP, "up"),
@@ -45,6 +47,7 @@ var processInputs = function (controller) {
 
 var broadcast = function (controller) {
   socket.emit("tick", {
+    name: controller.name,
     up: controller.up,
     right: controller.right,
     down: controller.down,
@@ -54,15 +57,13 @@ var broadcast = function (controller) {
   });
 };
 
-var controller = new Phaser.Game(1920, 960, Phaser.CANVAS, "controller", states);
+var controller = new Phaser.Game(320, 240, Phaser.CANVAS, "controller", states);
 
 var handleConnect = function () {
-  //controller.active = true;
   console.log("connected");
 };
 
 var handleDisconnect = function () {
-  //controller.active = false;
   console.log("disconnected");
 };
 
