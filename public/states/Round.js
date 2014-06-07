@@ -3,6 +3,38 @@ var Hadouken = require("../entities/Hadouken")
 var {getRandom, noop, isTypeCombo} = require("../utils")
 
 module.exports = class Round extends Phaser.State {
+
+  addPlayer(id) {
+    var spawn = getRandom(this.playerSpawns)
+    var player = new Player(this.game, spawn.x, spawn.y)
+
+    this.registerPlayer(player)
+    this.socketPlayerMap[id] = player
+    console.log("add", id) 
+  }
+
+  removePlayer(id) {
+    var player = this.socketPlayerMap[id]
+
+    if (!player) return false
+    this.players.remove(player)
+    this.socketPlayerMap[id] = undefined
+    console.log("remove", id)  
+  }
+
+  updatePlayer({id, keys}) {
+    var player = this.socketPlayerMap[id]
+
+    if (!player) return false
+    player.name = keys.name
+    player.up = keys.up
+    player.right = keys.right
+    player.down = keys.down
+    player.left = keys.left
+    if (keys.jump) player.jump()
+    if (keys.fire) player.fire(this.hadoukens)
+  }
+
   registerPlayer(player) {
     this.players.add(player) 
     player.body.collides(this.wallsCg)
@@ -44,11 +76,11 @@ module.exports = class Round extends Phaser.State {
       , player
       , shouldCollide = true
 
-    if (isTypeCombo(body1.name, body2.name, "player", "hadouken")) {
-      player = body1.name === "player" ? body1 : body2
-      hadouken = body2.name === "hadouken" ? body2 : body1
-      this.hadoukenHitsPlayer(hadouken, player)
+    if (isTypeCombo(body1._type, body2._type, "player", "hadouken")) {
       shouldCollide = false
+      player = body1._type === "player" ? body1 : body2
+      hadouken = body2._type === "hadouken" ? body2 : body1
+      this.hadoukenHitsPlayer(hadouken, player)
     } else {
       shouldCollide = true
     }
@@ -64,6 +96,22 @@ module.exports = class Round extends Phaser.State {
   }
 
   create() {
+    this.playerSpawns = [
+      new Phaser.Point(200, 200),
+      new Phaser.Point(600, 200),
+      new Phaser.Point(1300, 200),
+      new Phaser.Point(900, 450),
+      new Phaser.Point(700, 650),
+      new Phaser.Point(1200, 650)
+    ]
+
+    this.socketPlayerMap = {}
+
+    this.game._socket
+      .on("join", this.addPlayer.bind(this))
+      .on("leave", this.removePlayer.bind(this))
+      .on("tick", this.updatePlayer.bind(this))
+
     this.inputs = []
 
     this.killSounds = [
@@ -97,12 +145,13 @@ module.exports = class Round extends Phaser.State {
     this.wallsCg = this.game.physics.p2.createCollisionGroup()
     this.hadoukensCg = this.game.physics.p2.createCollisionGroup()
 
-    var player1 = new Player(this.game, 900, 450)
     var walls = this.game.physics.p2.convertCollisionObjects(
       this.map,
       "Collisions",
       true
     )
+    var spawn = getRandom(this.playerSpawns)
+    var player1 = new Player(this.game, spawn.x, spawn.y)
 
     this.registerPlayer(player1)
     walls.forEach(this.registerWall, this)

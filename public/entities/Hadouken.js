@@ -7,7 +7,7 @@ module.exports = class Hadouken extends Phaser.Sprite {
     game.physics.p2.enable(this)
 
     this.body.setCircle(16)
-    this.body.name = "hadouken"
+    this.body._type = "hadouken"
 
     this.speed = 2000
     this.owner = null

@@ -6,16 +6,17 @@ module.exports = class Player extends Phaser.Sprite {
     game.physics.p2.enable(this)
 
     this.body.setCircle(24)
-    this.body.name = "player"
+    this.body._type = "player"
 
+    this.name = ""
     this.speed = 300
     this.jumping = false
     this.jumpDuration = 600
     this.hadoukenTimeout = 1000
     this.lastHadouken = null
 
-    this.z = 1.0
-    this.scale.setTo(this.z, this.z)
+    this.initialHeight = 1.0
+    this.scale.setTo(this.initialHeight, this.initialHeight)
     this.rotationOffset = Math.PI / 2
 
     this.up = false
@@ -35,14 +36,16 @@ module.exports = class Player extends Phaser.Sprite {
   jump() {
     if (this.jumping) return false
 
-    var initialHeight = this.z
+    var initialHeight = this.initialHeight
       , apex = initialHeight * 1.2
+      , max = {x: apex, y: apex}
+      , min = {x: initialHeight, y: initialHeight}
       , upTime = this.jumpDuration / 2
       , downTime = this.jumpDuration / 2
       , easeUp = Phaser.Easing.Sinusoidal.Out
       , easeDown = Phaser.Easing.Sinusoidal.In
-      , ascent = this.game.add.tween(this).to({z: apex}, upTime, easeUp)
-      , descent = this.game.add.tween(this).to({z: initialHeight}, downTime, easeDown)
+      , ascent = this.game.add.tween(this.scale).to(max, upTime, easeUp)
+      , descent = this.game.add.tween(this.scale).to(min, downTime, easeDown)
 
     ascent.onStart.add(() => {
       this.jumpSound.play()
@@ -78,8 +81,6 @@ module.exports = class Player extends Phaser.Sprite {
       , yVel = upVel + downVel
       , stopped = (!xVel && !yVel)
 
-    this.scale.x = this.z
-    this.scale.y = this.z
     this.body.setZeroRotation()
     this.body.rotation = stopped 
       ? this.body.rotation

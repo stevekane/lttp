@@ -17,14 +17,24 @@ var servers = io
 var controllers = io
   .of("/controller")
   .on("connection", function (socket, keys) {
+    var id = socket.id;
 
-    socket.on("tick", function () {
+    servers.emit("join", id)
+
+    socket.on("disconnect", function () {
+      servers.emit("leave", id); 
+    });
+
+    socket.on("tick", function (keys) {
       var controllerPulse = {
-        id: socket.id,
+        id: id,
         keys: keys
       };
       
-      servers.emit("tick", controllerPulse);
+      servers.emit("tick", {
+        id: id,
+        keys: keys 
+      });
     });
   });
 

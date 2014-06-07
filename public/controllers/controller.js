@@ -15,6 +15,7 @@ var states = {
     this.name = e.target.value;
   },
   create: function () {
+    this.game.stage.disableVisibilityChange = true;
     nameInput.addEventListener("input", this.updateName.bind(this));
     this.up = false;
     this.right = false;
@@ -23,6 +24,9 @@ var states = {
     this.jump = false;
     this.fire = false;
     this.name = "";
+
+    this.broadcastInterval = 100
+    this.lastBroadcast = Date.now()
 
     this.inputs = [
       Input(this, Phaser.Keyboard.UP, "up"),
@@ -34,29 +38,37 @@ var states = {
     ];
   },
   update: function () {
-    processInputs(this);
-    broadcast(this);
+    this.processInputs();
+    this.broadcast();
+  },
+
+  processInputs: function () {
+    this.inputs.forEach(function (input) {
+      this[input.prop] = input.key.isDown; 
+    }, this); 
+  },
+
+  broadcast: function () {
+    var now = Date.now()
+      , doBroadcast = now > this.lastBroadcast + this.broadcastInterval
+      , payload;
+
+    if (!doBroadcast) return false;
+
+    payload = {
+      name: this.name,
+      up: this.up,
+      right: this.right,
+      down: this.down,
+      left: this.left,
+      jump: this.jump,
+      fire: this.fire    
+    };
+
+    socket.emit("tick", payload);
+    this.lastBroadcast = now;
   }
 };
-
-var processInputs = function (controller) {
-  controller.inputs.forEach(function (input) {
-    controller[input.prop] = input.key.isDown;
-  });
-};
-
-var broadcast = function (controller) {
-  socket.emit("tick", {
-    name: controller.name,
-    up: controller.up,
-    right: controller.right,
-    down: controller.down,
-    left: controller.left,
-    jump: controller.jump,
-    fire: controller.fire    
-  });
-};
-
 var controller = new Phaser.Game(320, 240, Phaser.CANVAS, "controller", states);
 
 var handleConnect = function () {
