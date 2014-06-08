@@ -7,7 +7,13 @@ module.exports = class Player extends Phaser.Sprite {
     this.body.setCircle(24)
     this.body._type = "player"
 
-    this.name = ""
+    this.name = "test"
+    this.nameText = game.add.text(this.x, this.y - 60, this.name, {
+      font: "30px Arial",
+      fill: "#ff0000",
+      align: "center"
+    })
+    this.nameText.anchor.set(.5)
     this.speed = 300
     this.jumping = false
     this.jumpDuration = 600
@@ -76,6 +82,9 @@ module.exports = class Player extends Phaser.Sprite {
       , yVel = upVel + downVel
       , stopped = (!xVel && !yVel)
 
+    this.nameText.x = this.x
+    this.nameText.y = this.y - 60
+    this.nameText.setText(this.name)
     this.body.setZeroRotation()
     this.body.rotation = stopped 
       ? this.body.rotation
