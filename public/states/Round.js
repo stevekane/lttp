@@ -6,9 +6,9 @@ module.exports = class Round extends Phaser.State {
 
   addPlayer(id) {
     var spawn = getRandom(this.playerSpawns)
-    var player = new Player(this.game, spawn.x, spawn.y)
+    var player = this.players.getFirstExists(false)
 
-    this.registerPlayer(player)
+    player.reset(spawn.x, spawn.y)
     this.socketPlayerMap[id] = player
     console.log("add", id) 
   }
@@ -17,8 +17,8 @@ module.exports = class Round extends Phaser.State {
     var player = this.socketPlayerMap[id]
 
     if (!player) return false
-    this.players.remove(player)
-    this.socketPlayerMap[id] = undefined
+    player.kill()
+    delete this.socketPlayerMap[id]
     console.log("remove", id)  
   }
 
@@ -36,7 +36,6 @@ module.exports = class Round extends Phaser.State {
   }
 
   registerPlayer(player) {
-    this.players.add(player) 
     player.body.collides(this.wallsCg)
     player.body.setCollisionGroup(this.playersCg)
   }
@@ -62,7 +61,7 @@ module.exports = class Round extends Phaser.State {
     } else {
       getRandom(this.killSounds).play()
       had.sprite.kill()
-      //player.sprite.kill()
+      player.sprite.kill()
     }
   }
 
@@ -112,8 +111,6 @@ module.exports = class Round extends Phaser.State {
       .on("leave", this.removePlayer.bind(this))
       .on("tick", this.updatePlayer.bind(this))
 
-    this.inputs = []
-
     this.killSounds = [
       this.game.add.audio("toasty"), 
       this.game.add.audio("toasty3")
@@ -133,11 +130,17 @@ module.exports = class Round extends Phaser.State {
     this.map.addTilesetImage("Desert", "Desert")
     this.ground = this.map.createLayer("Ground")
 
-    this.players = this.add.group()
+    this.players = this.game.add.group()
+    this.players.classType = Player
+    this.players.enableBody = true
+    this.players.physicsBodyType = Phaser.Physics.P2
+    this.players.createMultiple(20, "player")
 
-    this.hadoukens = this.add.group()
+    this.hadoukens = this.game.add.group()
     this.hadoukens.classType = Hadouken
-    this.hadoukens.createMultiple(1000)
+    this.hadoukens.enableBody = true
+    this.hadoukens.physicsBodyType = Phaser.Physics.P2
+    this.hadoukens.createMultiple(1000, "hadouken")
 
     this.walls = []
 
@@ -150,54 +153,26 @@ module.exports = class Round extends Phaser.State {
       "Collisions",
       true
     )
-    var spawn = getRandom(this.playerSpawns)
-    var player1 = new Player(this.game, spawn.x, spawn.y)
 
-    this.registerPlayer(player1)
-    walls.forEach(this.registerWall, this)
+    this.players.forEach(this.registerPlayer, this)
     this.hadoukens.forEach(this.registerHadouken, this)
-
-    this.inputs.push({
-      key: this.input.keyboard.addKey(Phaser.Keyboard.UP), 
-      down: () => { player1.up = true }, 
-      up: () => { player1.up = false }
-    })
-    this.inputs.push({
-      key: this.input.keyboard.addKey(Phaser.Keyboard.RIGHT), 
-      down: () => { player1.right = true }, 
-      up: () => { player1.right = false }
-    })
-    this.inputs.push({
-      key: this.input.keyboard.addKey(Phaser.Keyboard.DOWN), 
-      down: () => { player1.down = true }, 
-      up: () => { player1.down = false }
-    })
-    this.inputs.push({
-      key: this.input.keyboard.addKey(Phaser.Keyboard.LEFT), 
-      down: () => { player1.left = true }, 
-      up: () => { player1.left = false }
-    })
-    this.inputs.push({
-      key: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
-      down: player1.jump.bind(player1)
-    })
-    this.inputs.push({
-      key: this.input.keyboard.addKey(Phaser.Keyboard.F),
-      down: player1.fire.bind(player1, this.hadoukens)
-    })
-
-    this.game.physics.p2.setPostBroadphaseCallback(this.checkOverlap, this)
+    walls.forEach(this.registerWall, this)
   }
 
   update() {
-    this.inputs.forEach(doActionForKey)
+    var living = this.players.countLiving()
+    var playerCount = Object.keys(this.socketPlayerMap).length
+
+    if (living > 1) {
+      this.game.physics.p2.setPostBroadphaseCallback(this.checkOverlap, this) 
+    } else if (living === 1) {
+      Object.keys(this.socketPlayerMap).forEach(function (key) {
+        this.socketPlayerMap[key].revive() 
+      }, this)
+    } else {
+      if (this.game.physics.p2.postBroadphaseCallback) {
+        this.game.physics.p2.setPostBroadphaseCallback(null)
+      }
+    }
   }
-}
-
-var doActionForKey = ({key, down, up}) => {
-  var down = down || noop
-    , up = up || noop
-
-  if (key.isDown) down()
-  else up()
 }

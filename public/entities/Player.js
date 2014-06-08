@@ -1,6 +1,5 @@
 module.exports = class Player extends Phaser.Sprite {
   constructor(game, x, y) {
-    //super(game, x, y, "player", 0)
     super(game, x, y, "none", 0)
 
     game.physics.p2.enable(this)
@@ -23,10 +22,6 @@ module.exports = class Player extends Phaser.Sprite {
     this.right = false
     this.down = false
     this.left = false
-
-    //this.animations.add("walking", [0, 1, 2, 3], 8)
-    //this.animations.add("jumping", [3], 8)
-    //this.animations.add("idle", [0], 8)
 
     this.jumpSound = game.add.audio("jump")
     this.landSound = game.add.audio("jump")
