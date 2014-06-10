@@ -5,6 +5,7 @@ var uuid = require("node-uuid");
 var _ = require("lodash");
 var remove = _.remove;
 var invoke = _.invoke;
+var values = _.values;
 var moniker = require("moniker");
 var sio = require("socket.io");
 
@@ -70,7 +71,7 @@ app.get("/", function (req, res) {
 });
 
 app.get("/lobby", function (req, res) {
-  res.render("lobby", {games: games});
+  res.render("lobby", {games: values(games)});
 });
 
 app.get("/controller/:id", function (req, res) {
