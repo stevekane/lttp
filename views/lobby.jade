@@ -1,0 +1,11 @@
+html
+  head
+    link(rel="stylesheet", href="/stylesheets/styles.css")
+    title LTTP Lobby
+  body
+    ul.servers
+      each game in games
+        li.server
+          a(href=game.url)= game.name
+
+    script(src="/vendor/bundle.js")

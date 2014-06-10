@@ -27,7 +27,8 @@
     "socket.io": "^1.0.4",
     "socket.io-client": "^1.0.4",
     "node-uuid": "^1.4.1",
-    "es6ify": "^1.1.0"
+    "es6ify": "^1.1.0",
+    "moniker": "^0.1.2"
   },
   "devDependencies": {
     "grunt-contrib-watch": "^0.6.1",

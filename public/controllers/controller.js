@@ -79,6 +79,11 @@ var handleDisconnect = function () {
   console.log("disconnected");
 };
 
+var gotoLobby = function (url) {
+  window.location = url || "/lobby";
+};
+
 socket
   .on("connect", handleConnect)
   .on("disconnect", handleDisconnect)
+  .on("game-end", gotoLobby)

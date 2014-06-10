@@ -1,0 +1,11 @@
+#Servers are instances of webpages connected to the "hub" at the /server endpoint
+
+When a server connects to the HUB, it becomes an instance of the game running at a
+certain URL.  This URL may be passed to other players allowing them to join a match
+directly w/ their browser.  Alternatively, they may connect to the /lobby endpoint
+and find a server to join from there.
+
+When a server disconnects, the room is destroyed and the url that used to serve it
+will now redirect the user to the /lobby route.
+
+A client connects to the websocket HUB onces they are in a specific room.
