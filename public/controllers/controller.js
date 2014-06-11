@@ -25,7 +25,7 @@ var states = {
     this.fire = false;
     this.name = "";
 
-    this.broadcastInterval = 100
+    this.broadcastInterval = 33
     this.lastBroadcast = Date.now()
 
     this.inputs = [
@@ -69,6 +69,7 @@ var states = {
     this.lastBroadcast = now;
   }
 };
+
 var controller = new Phaser.Game(320, 240, Phaser.CANVAS, "controller", states);
 
 var handleConnect = function () {
