@@ -5,6 +5,7 @@ var test = require("tape")
   , demethodizeMultiple = fh.demothodizeMultiple
   , slice = fh.slice
   , concat = fh.concat
+  , partial = fh.partial
   , curry = fh.curry
   , autoCurry = fh.autoCurry
   , flip = fh.flip
@@ -19,6 +20,18 @@ test("slice", function (t) {
   t.same([4,5,6], lastThree, "returns last 3 elements");
 });
 
+test("concat", function (t) {
+  var ar1 = [1,2]
+    , ar2 = [3,4]
+    , ar3 = [5,6]
+    , result = concat(ar1, ar2)
+    , triple = concat(ar1, ar2, ar3);
+
+  t.plan(2);
+  t.same([1,2,3,4], result, "concat returns concatenated result");
+  t.same([1,2,3,4,5,6], triple, "concat returns concat of >2 arrays");
+});
+
 test("flip", function (t) {
   var makeName = function (first, last) {
     return first + last; 
@@ -29,6 +42,20 @@ test("flip", function (t) {
 
   t.plan(1);
   t.same(original, flipped, "flipped correctly flips arguments");
+});
+
+test("compose", function (t) {
+  var addSmith = function (name) { return name + " Smith" };
+  var addTitle = function (fullName) { return "Mr. " + fullName };
+  var makeMrSmith = compose(addSmith, addTitle);
+  var capitalize = demethodize(String.prototype, "toUpperCase");
+  var name = makeMrSmith("Steve");
+  var yellMrSmith = compose(makeMrSmith, capitalize);
+  var bigName = yellMrSmith("Steve");
+
+  t.plan(2);
+  t.same("Mr. Steve Smith", name, "compose concats functions");
+  t.same("MR. STEVE SMITH", bigName, "compose concats composed function");
 });
 
 test("reduce", function (t) {
@@ -56,6 +83,17 @@ test("reduce to value", function (t) {
 
   t.plan(1);
   t.equal(total, 21, "correctly sums numbers");
+});
+
+test("partial", function (t) {
+  var fn = function (a, b, c, d) {
+    return a + b + c + d;
+  };
+  var partialFn = partial(fn, 1, 2);
+  var result = partialFn(3, 4);
+  
+  t.plan(1);
+  t.same(10, result, "partial application works");
 });
 
 test("curry", function (t) {

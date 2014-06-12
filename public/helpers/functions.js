@@ -32,13 +32,23 @@ var compose = function (fns) {
 
   return function composed () {
     var prev = slice(0, arguments);
-    var result;
 
     for (var fn in fns) {
       prev = isArray(prev) ? fns[fn].apply(this, prev) : fns[fn].call(this, prev);
     }
 
-    return result;
+    return prev;
+  };
+};
+
+var partial = function (fn) {
+  var args = slice(1, arguments);
+
+  return function partialed () {
+    var innerArgs = slice(0, arguments);
+    var allArgs = concat(args, innerArgs);
+
+    return fn.apply(this, allArgs);
   };
 };
 
@@ -81,5 +91,6 @@ exports.slice = slice;
 exports.concat = concat;
 exports.flip = flip;
 exports.compose = compose;
+exports.partial = partial;
 exports.curry = curry;
 exports.autoCurry = autoCurry;
