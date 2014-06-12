@@ -24,8 +24,6 @@ var Game = function (socket) {
 
 var games = {};
 
-var onServerConnect = function (socket, 
-
 io
 .of("/server")
 .on("connection", function (socket) {
