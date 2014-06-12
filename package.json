@@ -33,6 +33,7 @@
     "grunt": "^0.4.5",
     "es6ify": "^1.1.0",
     "grunt-browserify": "^2.1.0",
-    "browserify": "^4.1.9"
+    "browserify": "^4.1.9",
+    "tape": "^2.13.3"
   }
 }
