@@ -1,10 +1,30 @@
+var reduce = function (accum, redFn, list) {
+  for (var item in list) {
+    accum = redFn(accum, list[item]);
+  };
+
+  return accum;
+};
+
 var isArray = function (obj) {
   return Object.prototype.toString.call(obj) === "[object Array]";
 };
 
+var reverse = function (list) {
+  var backwards = [];
+
+  for (var item in list) {
+    backwards.unshift(list[item]); 
+  }
+
+  return backwards;
+};
+
 var flip = function (fn) {
-  return function (b, a) {
-    return fn(a, b); 
+  return function () {
+    var args = Array.prototype.slice.call(arguments, 0);
+
+    return fn.apply(this, reverse(args)); 
   };
 };
 
@@ -85,8 +105,10 @@ var autoCurry = function autoCurry (fn, argsCount) {
 };
 
 
+exports.reduce = reduce;
 exports.demethodize = demethodize;
 exports.demethodizeMultiple = demethodizeMultiple;
+exports.reverse = reverse;
 exports.slice = slice;
 exports.concat = concat;
 exports.flip = flip;

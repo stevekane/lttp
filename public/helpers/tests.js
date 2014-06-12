@@ -1,5 +1,4 @@
 var test = require("tape")
-  , ah = require("./array")
   , fh = require("./functions")
   , demethodize = fh.demethodize
   , demethodizeMultiple = fh.demothodizeMultiple
@@ -8,24 +7,37 @@ var test = require("tape")
   , partial = fh.partial
   , curry = fh.curry
   , autoCurry = fh.autoCurry
+  , reverse = fh.reverse
   , flip = fh.flip
   , compose = fh.compose 
-  , reduce = ah.reduce;
+  , reduce = fh.reduce;
+
+test("demethodize", function (t) {
+  var name = "Steve Ballmer";
+  var yell = demethodize(String.prototype, "toUpperCase");
+
+  t.plan(1);
+  t.same(yell(name), name.toUpperCase(), "demethodization works");
+});
+
+//test("demethodizeMultiple", function (t) {
+//  
+//});
 
 test("slice", function (t) {
-  var ar = [1,2,3,4,5,6] 
-    , lastThree = slice(3, ar);
+  var ar = [1,2,3,4,5,6];
+  var lastThree = slice(3, ar);
 
   t.plan(1);
   t.same([4,5,6], lastThree, "returns last 3 elements");
 });
 
 test("concat", function (t) {
-  var ar1 = [1,2]
-    , ar2 = [3,4]
-    , ar3 = [5,6]
-    , result = concat(ar1, ar2)
-    , triple = concat(ar1, ar2, ar3);
+  var ar1 = [1,2];
+  var ar2 = [3,4];
+  var ar3 = [5,6];
+  var result = concat(ar1, ar2);
+  var triple = concat(ar1, ar2, ar3);
 
   t.plan(2);
   t.same([1,2,3,4], result, "concat returns concatenated result");
