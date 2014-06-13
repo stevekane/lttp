@@ -118,16 +118,21 @@ var autoCurry = function autoCurry (fn, argsCount) {
   };
 };
 
-var withRange = function (start, stop, fn) {
-  return function () { 
-    return fn(slice(start, stop, arguments)) 
+var withRange = function (start, stop) {
+  return function (fn) { 
+    return function () {
+      var args = toArray(arguments);
+      var acceptedArgs = args.slice(start, stop);
+
+      return apply(fn, acceptedArgs);
+    };
   };
 };
 
 //TODO: ADD TESTS
-var unary = partial(withRange, 0, 1);
-var binary = partial(withRange, 0, 2);
-var ternary = partial(withRange, 0, 3);
+var unary = withRange(0, 1);
+var binary = withRange(0, 2);
+var ternary = withRange(0, 3);
 
 exports.reduce = reduce;
 exports.map = map;

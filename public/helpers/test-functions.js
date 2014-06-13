@@ -11,7 +11,10 @@ var test = require("tape")
   , dot = fh.dot
   , compose = fh.compose 
   , sequence = fh.sequence
-  , reduce = fh.reduce;
+  , reduce = fh.reduce
+  , unary = fh.unary
+  , binary = fh.binary
+  , ternary = fh.ternary;
 
 test("demethodize", function (t) {
   var name = "Steve Ballmer";
@@ -158,4 +161,32 @@ test("autoCurry", function (t) {
   t.plan(2);
   t.same(10, firstResult, "curry correctly returns 10");
   t.same(10, secondResult, "curry correctly returns 10");
+});
+
+var getLen = function () { 
+  return arguments.length; 
+};
+
+test("unary", function (t) {
+  var onlyOne = unary(getLen);
+  var len = onlyOne(1,2,3,4,5);
+
+  t.plan(1);
+  t.same(1, len);
+});
+
+test("binary", function (t) {
+  var onlyTwo = binary(getLen);
+  var len = onlyTwo(1,2,3,4,5);
+
+  t.plan(1);
+  t.same(2, len);
+});
+
+test("ternary", function (t) {
+  var onlyThree = ternary(getLen);
+  var len = onlyThree(1,2,3,4,5);
+
+  t.plan(1);
+  t.same(3, len);
 });
