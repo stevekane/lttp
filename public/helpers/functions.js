@@ -121,15 +121,11 @@ var autoCurry = function autoCurry (fn, argsCount) {
 var withRange = function (start, stop) {
   return function (fn) { 
     return function () {
-      var args = toArray(arguments);
-      var acceptedArgs = args.slice(start, stop);
-
-      return apply(fn, acceptedArgs);
+      return apply(fn, slice(stop, start, arguments));
     };
   };
 };
 
-//TODO: ADD TESTS
 var unary = withRange(0, 1);
 var binary = withRange(0, 2);
 var ternary = withRange(0, 3);
