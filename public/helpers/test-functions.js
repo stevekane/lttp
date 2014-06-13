@@ -134,11 +134,10 @@ test("map", function (t) {
   t.same(["A+", "B+", "A+"], betterGrades);
 });
 
+var sumFour = function (a, b, c, d) { return a + b + c + d };
+
 test("partial", function (t) {
-  var fn = function (a, b, c, d) {
-    return a + b + c + d;
-  };
-  var partialFn = partial(fn, 1, 2);
+  var partialFn = partial(sumFour, 1, 2);
   var result = partialFn(3, 4);
   
   t.plan(1);
@@ -146,10 +145,7 @@ test("partial", function (t) {
 });
 
 test("curry", function (t) {
-  var fn = function (a, b, c, d) {
-    return a + b + c + d;
-  };
-  var curried = curry(fn, 1, 2);
+  var curried = curry(sumFour, 1, 2);
   var result = curried(3, 4);
 
   t.plan(1);
@@ -157,10 +153,7 @@ test("curry", function (t) {
 });
 
 test("autoCurry", function (t) {
-  var fn = function (a, b, c, d) {
-    return a + b + c + d;
-  };
-  var curried = autoCurry(fn);
+  var curried = autoCurry(sumFour);
   var halfway = curried(1, 2);
   var firstResult = halfway(3, 4);
   var phase1 = curried(1);
