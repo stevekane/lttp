@@ -12,6 +12,7 @@ var test = require("tape")
   , compose = fh.compose 
   , sequence = fh.sequence
   , reduce = fh.reduce
+  , map = fh.map
   , unary = fh.unary
   , binary = fh.binary
   , ternary = fh.ternary;
@@ -122,6 +123,15 @@ test("reduce to value", function (t) {
 
   t.plan(1);
   t.equal(total, 21, "correctly sums numbers");
+});
+
+test("map", function (t) {
+  var grades = ["A", "B", "A"];
+  var makePlus = function (grade) { return grade + "+" };
+  var betterGrades = map(makePlus, grades);
+
+  t.plan(1);
+  t.same(["A+", "B+", "A+"], betterGrades);
 });
 
 test("partial", function (t) {

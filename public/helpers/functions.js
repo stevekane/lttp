@@ -14,7 +14,6 @@ var reduce = function (accum, redFn, list) {
   return accum;
 };
 
-//TODO: add tests
 var map = function (mapFn, list) {
   var result = [];
 
@@ -103,7 +102,7 @@ var autoCurry = function autoCurry (fn, argsCount) {
     var notEnoughArgs = arguments.length < fnArity;
     var missingArgsCount = fnArity - arguments.length;
     var stillMissingArgs = missingArgsCount > 0;
-    var args = concat([fn], slice(0, arguments));
+    var args = concat([fn], toArray(arguments));
     var result;
 
     if (notEnoughArgs && stillMissingArgs) {
