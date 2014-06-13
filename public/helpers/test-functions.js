@@ -1,7 +1,6 @@
 var test = require("tape")
   , fh = require("./functions")
   , demethodize = fh.demethodize
-  , demethodizeMultiple = fh.demothodizeMultiple
   , slice = fh.slice
   , concat = fh.concat
   , partial = fh.partial
@@ -9,7 +8,9 @@ var test = require("tape")
   , autoCurry = fh.autoCurry
   , reverse = fh.reverse
   , flip = fh.flip
+  , dot = fh.dot
   , compose = fh.compose 
+  , sequence = fh.sequence
   , reduce = fh.reduce;
 
 test("demethodize", function (t) {
@@ -19,10 +20,6 @@ test("demethodize", function (t) {
   t.plan(1);
   t.same(yell(name), name.toUpperCase(), "demethodization works");
 });
-
-//test("demethodizeMultiple", function (t) {
-//  
-//});
 
 test("slice", function (t) {
   var ar = [1,2,3,4,5,6];
@@ -56,18 +53,45 @@ test("flip", function (t) {
   t.same(original, flipped, "flipped correctly flips arguments");
 });
 
+test("dot", function (t) {
+  var customer = {
+    name: "Ted Danson",
+    title: "Overlord" 
+  };
+  var name = dot("name", customer);
+  var title = dot("title", customer);
+  
+  t.plan(2);
+  t.same("Ted Danson", name, "dot returns a named property name");
+  t.same("Overlord", title, "dot returns a named property title");
+});
+
 test("compose", function (t) {
   var addSmith = function (name) { return name + " Smith" };
   var addTitle = function (fullName) { return "Mr. " + fullName };
-  var makeMrSmith = compose(addSmith, addTitle);
+  var makeMrSmith = compose(addTitle, addSmith);
   var capitalize = demethodize(String.prototype, "toUpperCase");
   var name = makeMrSmith("Steve");
-  var yellMrSmith = compose(makeMrSmith, capitalize);
+  var yellMrSmith = compose(capitalize, makeMrSmith);
   var bigName = yellMrSmith("Steve");
 
   t.plan(2);
   t.same("Mr. Steve Smith", name, "compose concats functions");
   t.same("MR. STEVE SMITH", bigName, "compose concats composed function");
+});
+
+test("sequence", function (t) {
+  var addSmith = function (name) { return name + " Smith" };
+  var addTitle = function (fullName) { return "Mr. " + fullName };
+  var makeMrSmith = sequence(addSmith, addTitle);
+  var capitalize = demethodize(String.prototype, "toUpperCase");
+  var name = makeMrSmith("Steve");
+  var yellMrSmith = sequence(makeMrSmith, capitalize);
+  var bigName = yellMrSmith("Steve");
+
+  t.plan(2);
+  t.same("Mr. Steve Smith", name, "sequence concats functions");
+  t.same("MR. STEVE SMITH", bigName, "sequence concats sequenced function");
 });
 
 test("reduce", function (t) {
