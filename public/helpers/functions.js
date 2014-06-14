@@ -8,9 +8,9 @@ var isArray = function (obj) {
 
 var reduce = function (accum, redFn, list) {
   for (var item in list) {
-    accum = redFn(accum, list[item], item);
+    accum = redFn(accum, list[item], item, list);
   };
-
+  
   return accum;
 };
 
@@ -75,16 +75,11 @@ var bind = function (fn) { return fn.bind(this, allButFirst(arguments)) };
 var compose = function (fns) {
   var fns = isArray(fns) ? fns : toArray(arguments);
 
-  return function composed () {
-    var prev = toArray(arguments);
-
-    for (var i = 0, len = fns.length; i < len; i++) {
-      prev = isArray(prev) 
-        ? apply(fns[len-1-i], prev) 
-        : call(fns[len-1-i], prev);
+  return function composed (val) {
+    for (var i = fns.length - 1; i >= 0; --i) {
+      val = fns[i](val);
     }
-
-    return prev;
+    return val;
   };
 };
 
@@ -172,3 +167,6 @@ exports.autoCurry = autoCurry;
 exports.unary = unary;
 exports.binary = binary;
 exports.ternary = ternary;
+exports.bind = bind;
+exports.call = call;
+exports.apply = apply;
