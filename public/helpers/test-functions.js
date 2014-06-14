@@ -13,6 +13,8 @@ var test = require("tape")
   , sequence = fh.sequence
   , reduce = fh.reduce
   , map = fh.map
+  , filter = fh.filter
+  , find = fh.find
   , unary = fh.unary
   , binary = fh.binary
   , ternary = fh.ternary;
@@ -132,6 +134,30 @@ test("map", function (t) {
 
   t.plan(1);
   t.same(["A+", "B+", "A+"], betterGrades);
+});
+
+test("filter", function (t) {
+  var grades = ["A", "B", "A", "D", "F"];
+  var passing = function (grade) {
+    return grade === "A" || grade === "B" || grade === "C"; 
+  }
+  var passingGrades = filter(passing, grades);
+
+  t.plan(2);
+  t.ok(passingGrades.length === 3, "returns three passing grades");
+  t.same(passingGrades, ["A", "B", "A"]);
+});
+
+test("find", function (t) {
+  var grades = ["A", "B", "A", "D", "F"];
+  var findFailures = function (grade) {
+    return grade === "D" || grade === "F";
+  }
+
+  var firstFailure = find(findFailures, grades);
+
+  t.plan(1);
+  t.same(firstFailure, "D", "returns correct failing grade");
 });
 
 var sumFour = function (a, b, c, d) { return a + b + c + d };

@@ -24,6 +24,31 @@ var map = function (mapFn, list) {
   return result;
 };
 
+var filter = function (filterFn, list) {
+  var results = [];
+
+  for (var item in list) {
+    if (filterFn(list[item], item, list)) {
+      results.push(list[item]); 
+    }
+  }
+
+  return results;
+};
+
+var find = function (findFn, list) {
+  var result;  
+
+  for (var item in list) {
+    if (findFn(list[item], item, list)) {
+      result = list[item];
+      break;  
+    }
+  }
+  
+  return result;
+};
+
 var reverse = function (list) {
   var backwards = [];
 
@@ -131,6 +156,8 @@ var ternary = withRange(0, 3);
 
 exports.reduce = reduce;
 exports.map = map;
+exports.filter = filter;
+exports.find = find;
 exports.demethodize = demethodize;
 exports.reverse = reverse;
 exports.slice = slice;
